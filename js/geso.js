@@ -135,6 +135,10 @@
             slides: [],                 // array of $slides (head, section, footer)
             current_slide: undefined,
 
+            items:              [],
+            current_item:       undefined,
+            current_item_index: 0,
+
             _: 1
         };
 
@@ -147,7 +151,7 @@
 
 
         _fix_slides ();
-        _show_page(0);
+        _show_page(0, 0);
     }
 
 
@@ -165,7 +169,7 @@
     }
 
     // p: >= 0
-    function _show_page (p) {
+    function _show_page (p, p_from) {
         var data = __data;
 
         if (!_is_valid_page(p)) {
@@ -181,18 +185,25 @@
             data.current_slide = data.slides[p].show();
             data.current_page = p;
 
-            // modify url
-            var url_hash = '#!/page/' + p;
-            if ( /(?:#.*$)/.test(location.href) ) {
-                location.href = location.href.replace( /(?:#.*$)/, url_hash );
-            }
-            else {
-                location.href += url_hash;
-            }
+            data.items              = [];
+            data.current_item       = undefined;
+            data.current_item_index = 0;
         }
         catch (ex) {
             alert('oops.');
             return false;
+        }
+
+
+        _setup_items( p >= p_from ? false : true );
+
+        // modify url
+        var url_hash = '#!/page/' + p;
+        if ( /(?:#.*$)/.test(location.href) ) {
+            location.href = location.href.replace( /(?:#.*$)/, url_hash );
+        }
+        else {
+            location.href += url_hash;
         }
 
         return true;
@@ -201,31 +212,89 @@
     function _next_page (b) {
         if (b) {
             if ( _is_valid_page( __data.current_page + 1 ) ) {
-                _wipe(function () { _show_page(__data.current_page + 1) });
+                _wipe(function () {
+                    _show_page( __data.current_page + 1, __data.current_page );
+                });
             }
         }
         else {
-            _show_page(__data.current_page + 1);
+            _show_page( __data.current_page + 1, __data.current_page );
         }
     }
 
     function _prev_page (b) {
         if (b) {
             if ( _is_valid_page( __data.current_page - 1 ) ) {
-                _wipe(function () { _show_page(__data.current_page - 1) });
+                _wipe(function () {
+                    _show_page( __data.current_page - 1, __data.current_page );
+                });
             }
         }
         else {
-            _show_page(__data.current_page - 1);
+            _show_page( __data.current_page - 1, __data.current_page );
         }
     }
+
+
+    function _setup_items (b_back) {
+        var target = 'p, ul > li, ol > li, img';
+
+        var data = __data;
+        var $slide = data.current_slide;
+
+        if ($slide[0].tagName.toLowerCase() != 'section') {
+            return false;
+        }
+
+        $slide.find(target).each(function (i) {
+            var $item = $(this);
+
+            data.items.push($item);
+
+            // "forward" paging
+            if (!b_back) {
+                $item.hide();
+            }
+            // "backward" paging
+            else {
+                $item.show();
+            }
+        });
+
+        if (b_back) {
+            data.current_item_index = data.items.length;
+        }
+    }
+
 
 
 
     function _next_item (b) {
+        var data = __data;
+
+        // exists
+        if ( data.items[ data.current_item_index ] ) {
+            data.items[ data.current_item_index ].show();
+            data.current_item_index++;
+        }
+        //
+        else {
+            _next_page(b);
+        }
     }
 
     function _prev_item (b) {
+        var data = __data;
+
+        // exists
+        if ( data.items[ data.current_item_index - 1 ] ) {
+            data.current_item_index--;
+            data.items[ data.current_item_index ].hide();
+        }
+        //
+        else {
+            _prev_page(b);
+        }
     }
 
 
