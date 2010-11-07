@@ -11,17 +11,22 @@
         //   <div id="geso-wiped"></div>
         // </div>
         var empty_div = '<div></div>';
+        // #gesogeso
         $(empty_div)
             .attr({ id: 'gesogeso' })
+            // #gesogeso-geso-1
             .append(
                 $(empty_div).addClass('geso').attr({ id: 'gesogeso-geso-1' })
             )
+            // #gesogeso-geso-2
             .append(
                 $(empty_div).addClass('geso').attr({ id: 'gesogeso-geso-2' })
             )
+            // #gesogeso-geso-3
             .append(
                 $(empty_div).addClass('geso').attr({ id: 'gesogeso-geso-3' })
             )
+            // #geso-wiped
             .append(
                 $(empty_div).attr({ id: 'geso-wiped' })
             )
