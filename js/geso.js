@@ -43,12 +43,11 @@
         ;
 
         $geso1.css({
-            bottom: - parseInt( $geso1.height() / 2 ) - 160
+            top: h_w - parseInt( $geso1.height() / 2 ) + 160
         });
 
         $geso2.css({
-            //bottom: - parseInt( $geso2.width() / 2 )
-            bottom: - parseInt( $geso2.height() / 2 ) - 160
+            top: h_w - parseInt( $geso1.height() / 2 ) + 160
         });
 
         $geso3.css({

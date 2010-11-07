@@ -26,7 +26,6 @@ body {
 
 #gesogeso-geso-1 {
     z-index: 100001;
-    left: 0;
     left: -1120px; /* - (960 + 160) */
     background: url(../img/geso1_wiped.png) left top no-repeat;
     -webkit-transform: rotate(0deg);
