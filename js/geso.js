@@ -154,8 +154,8 @@
 
     function _fix_slides () {
         $('header, section, footer').css({
-            width:  $(window).width()  - 20,
-            height: $(window).height() - 20
+            width:  $(window).width()  - 20 - 20,
+            height: $(window).height() - 20 - 20
         });
     }
 
