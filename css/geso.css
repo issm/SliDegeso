@@ -7,8 +7,9 @@
 
 body {
     position: relative;
-    color: #464646;
+    color: #333;
     background: #fffe5e;
+    background: #fff;
     overflow: hidden;
 }
 
@@ -107,7 +108,7 @@ footer {
     position: absolute;
     display: none;
     height: 400px;
-    background: #cdf3ff;
+    background: #fdfdfd url(../img/bg_slide.png) left top;
 }
 
 header  *,
@@ -126,7 +127,11 @@ footer  > * {
 header h1,
 section h1,
 footer h1 {
-    margin: 10px 0 20px;
+    margin: 0px 0 20px;
+    padding: 10px 0;
+    border-bottom: 7px solid #4de5ff;
+    border-radius: 10px 10px 0 0;
+    background: #cdf3ff;
     text-align: center;
     font-size: 56px;
 }
