@@ -1,0 +1,74 @@
+body {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    background: #cdf3ff;
+    overflow: hidden;
+}
+
+
+
+
+#gesogeso {
+    /* position: relative; */
+}
+
+
+#gesogeso .geso {
+    position: absolute;
+    -webkit-animation-duration: 0.6s;
+    -webkit-animation-timing-function: linear;
+    -webkit-animation-iteration-count: 0;
+}
+
+#gesogeso-geso-1 {
+    /* top: 0; */
+    left: 0;
+left: -160px;
+    width: 960px;
+    height: 320px;
+    background: url(../img/geso1.png) left top no-repeat;
+    -webkit-transform-origin: left center;
+    -webkit-transform: rotate(0deg);
+    -webkit-animation-name: 'gesogeso-geso-1-anim';
+}
+
+#gesogeso-geso-2 {
+    /* top: 0; */
+    right: 0;
+right: -160px;
+right: -320px;
+    width: 320px;
+    height: 960px;
+    background: url(../img/geso2.png) right center no-repeat;
+    -webkit-transform-origin: center bottom;
+    -webkit-transform: rotate(0deg);
+    -webkit-animation-name: 'gesogeso-geso-2-anim';
+}
+
+#gesogeso-geso-3 {
+    top: -160px;
+    /* left: 400px; */
+    width: 320px;
+    height: 960px;
+    background: url(../img/geso3.png) center top no-repeat;
+    -webkit-transform-origin: center top;
+    -webkit-transform: rotate(90deg);
+    -webkit-animation-name: 'gesogeso-geso-3-anim';
+}
+
+
+@-webkit-keyframes 'gesogeso-geso-1-anim' {
+      0% { -webkit-transform: rotate(  0deg); }
+    100% { -webkit-transform: rotate(-90deg); }
+}
+
+@-webkit-keyframes 'gesogeso-geso-2-anim' {
+      0% { -webkit-transform: rotate(   0deg); }
+    100% { -webkit-transform: rotate( -90deg); }
+}
+
+@-webkit-keyframes 'gesogeso-geso-3-anim' {
+      0% { -webkit-transform: rotate( 90deg); }
+    100% { -webkit-transform: rotate(-90deg); }
+}
