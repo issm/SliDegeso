@@ -1,8 +1,14 @@
-body {
+* {
     margin: 0;
     padding: 0;
+    line-height: 100%;
+}
+
+
+body {
     position: relative;
     background: #cdf3ff;
+    background: #ffc;
     overflow: hidden;
 }
 
@@ -77,4 +83,85 @@ body {
     left: 0;
     background: #fff;
     display: none;
+}
+
+
+
+
+
+article {
+    font-family: sans-serif;
+    font-size: 32px;
+    position: absolute;
+    width: 100%;
+}
+
+
+
+header,
+section,
+footer {
+    margin: 10px;
+    border-radius: 10px;
+    position: absolute;
+    display: none;
+    height: 400px;
+    background: #cdf3ff;
+}
+
+header  *,
+section *,
+footer  * {
+    line-height: 120%;
+}
+
+header  > *,
+section > *,
+footer  > * {
+    margin-right: 40px;
+    margin-left:  40px;
+}
+
+header h1,
+section h1,
+footer h1 {
+    margin: 10px 0 20px;
+    text-align: center;
+    font-size: 56px;
+}
+
+
+
+
+header {
+}
+
+
+section {
+}
+
+
+
+header address {
+    margin: 0;
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    font-style: normal;
+    text-align: center;
+}
+
+
+p {
+    margin-bottom: 15px;
+}
+
+ul,
+ol {
+    margin-left: 60px;
+}
+
+ul li,
+ol li {
+    margin-bottom: 10px;
 }

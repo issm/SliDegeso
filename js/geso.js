@@ -125,9 +125,163 @@
 
 
 
+
+
+    function _setup_slides () {
+        var data = window.__data = {
+            pages:  0,                  // pages of slides
+            current_page: 0,
+
+            slides: [],                 // array of $slides (head, section, footer)
+            current_slide: undefined,
+
+            _: 1
+        };
+
+
+        $('header, section, footer').each(function () {
+            var $slide = $(this);
+            data.pages++;
+            data.slides.push($slide);
+        });
+
+
+        _fix_slides ();
+        _show_page(0);
+    }
+
+
+
+    function _fix_slides () {
+        $('header, section, footer').css({
+            width:  $(window).width()  - 20,
+            height: $(window).height() - 20
+        });
+    }
+
+
+    function _is_valid_page (p) {
+        return (p < __data.pages  &&  p >= 0) ? true : false;
+    }
+
+    // p: >= 0
+    function _show_page (p) {
+        var data = __data;
+
+        if (!_is_valid_page(p)) {
+            return false;
+        }
+
+
+        if (data.current_slide) {
+            data.current_slide.hide();
+        }
+
+        try {
+            data.current_slide = data.slides[p].show();
+            data.current_page = p;
+
+            // modify url
+            var url_hash = '#!/page/' + p;
+            if ( /(?:#.*$)/.test(location.href) ) {
+                location.href = location.href.replace( /(?:#.*$)/, url_hash );
+            }
+            else {
+                location.href += url_hash;
+            }
+        }
+        catch (ex) {
+            alert('oops.');
+            return false;
+        }
+
+        return true;
+    }
+
+    function _next_page (b) {
+        if (b) {
+            if ( _is_valid_page( __data.current_page + 1 ) ) {
+                _wipe(function () { _show_page(__data.current_page + 1) });
+            }
+        }
+        else {
+            _show_page(__data.current_page + 1);
+        }
+    }
+
+    function _prev_page (b) {
+        if (b) {
+            if ( _is_valid_page( __data.current_page - 1 ) ) {
+                _wipe(function () { _show_page(__data.current_page - 1) });
+            }
+        }
+        else {
+            _show_page(__data.current_page - 1);
+        }
+    }
+
+
+
+    function _next_item (b) {
+    }
+
+    function _prev_item (b) {
+    }
+
+
+
+
+    /**
+     *
+     *  CLick:              next item
+     *  Shift + Click:      next item without wiping
+     *
+     *  Enter:              next page with wiping
+     *  Shift + Enter:      next page without wiping
+     *  BackSpace:          previous page with wiping
+     *  Shift + BackSpace:  previous page without wiping
+     *
+     *  j: next item
+     *  k: previous item
+     *
+     **/
     function _bind_keys () {
-        $('body').click(function () {
-            _wipe();
+        // click
+        $('body').click(function (ev) {
+            var b_wipe = ev.shiftKey ? false : true;
+            _next_item(b_wipe);
+        });
+
+        // keydown
+        $('body').keydown(function (ev) {
+            var b_wipe = ev.shiftKey ? false : true;
+
+            switch (ev.keyCode) {
+            // enter
+            case 13:
+                _next_page(b_wipe);
+                return false;
+                break;
+
+            // backspace
+            case 8:
+                _prev_page(b_wipe);
+                return false;
+                break;
+
+
+            // j, J
+            case 74:
+                _next_item(b_wipe);
+                return false;
+                break;
+            // k, K
+            case 75:
+                _prev_item(b_wipe);
+                return false;
+                break;
+
+            }
         });
     }
 
@@ -135,19 +289,9 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
     window.__main = function () {
         _setup_geso();
+        _setup_slides();
         _bind_keys();
     };
 
