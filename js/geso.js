@@ -1,5 +1,36 @@
 (function () {
 
+    function _setup_geso () {
+        // <link rel="stylesheet" type="text/css" href="css/geso.css" />
+        //$('<link rel="stylesheet" type="text/css" href="css/geso.css" />').appendTo('body');
+
+        // <div id="gesogeso">
+        //   <div class="geso" id="gesogeso-geso-1"></div>
+        //   <div class="geso" id="gesogeso-geso-2"></div>
+        //   <div class="geso" id="gesogeso-geso-3"></div>
+        //   <div id="geso-wiped"></div>
+        // </div>
+        var empty_div = '<div></div>';
+        $(empty_div)
+            .attr({ id: 'gesogeso' })
+            .append(
+                $(empty_div).addClass('geso').attr({ id: 'gesogeso-geso-1' })
+            )
+            .append(
+                $(empty_div).addClass('geso').attr({ id: 'gesogeso-geso-2' })
+            )
+            .append(
+                $(empty_div).addClass('geso').attr({ id: 'gesogeso-geso-3' })
+            )
+            .append(
+                $(empty_div).attr({ id: 'geso-wiped' })
+            )
+            .appendTo('body')
+        ;
+
+        _fix_geso_position();
+    }
+
 
     function _fix_geso_position () {
         var $geso1 = $('#gesogeso-geso-1')
@@ -112,7 +143,7 @@
 
 
     window.__main = function () {
-        _fix_geso_position();
+        _setup_geso();
         _bind_keys();
     };
 
