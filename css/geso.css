@@ -166,3 +166,26 @@ ul li,
 ol li {
     margin-bottom: 10px;
 }
+
+
+
+
+section .navigator {
+    color: #fff;
+    text-align: right;
+
+    position: absolute;
+    right: -20px;
+    bottom: 20px;
+    width: 88px;
+    height: 44px;
+    overflow: hidden;
+    background-image: url(../img/geso_next.png);
+}
+
+section .navigator-more-item {
+    background-position: 0 0;
+}
+section .navigator-next-page {
+    background-position: 0 -44px;
+}
