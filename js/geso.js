@@ -163,6 +163,7 @@
 
 
         _fix_slides ();
+        _fix_pre_content();
         _show_page(0, 0);
     }
 
@@ -172,6 +173,26 @@
         $('header, section, footer').css({
             width:  $(window).width()  - 20 - 20,
             height: $(window).height() - 20 - 20
+        });
+    }
+
+    function _fix_pre_content () {
+        $('section pre').each(function () {
+            var lines =
+                $(this).text()
+                    .replace(/(^ *\n+|\n+ *$)/g, '')
+                    .split('\n');
+            try {
+            var indent_del = (lines[0] || '').match(/^( *)/)[1];
+            var re = new RegExp('^' + indent_del);
+            for (var i = 0; i < lines.length; i++) {
+                lines[i] = lines[i].replace(re, '');
+            }
+            $(this).text(lines.join('\n'));
+            }
+            catch (ex) {
+                alert(ex);
+            }
         });
     }
 
@@ -250,7 +271,7 @@
 
 
     function _setup_items (b_back) {
-        var target = 'p, ul > li, ol > li, img';
+        var target = 'p, pre, ul > li, ol > li, img';
 
         var data = __data;
         var $slide = data.current_slide;
