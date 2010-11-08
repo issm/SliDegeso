@@ -71,7 +71,9 @@
     function _wipe (callback) {
         var T = 1500;
         var t = 400;
-        
+
+        _unbind_functions();
+
         var $geso1 = $('#gesogeso-geso-1')
           , $geso2 = $('#gesogeso-geso-2')
           , $geso3 = $('#gesogeso-geso-3')
@@ -100,6 +102,7 @@
                         setTimeout(function () {
                             _wiped_screen(false);
                             ( callback || function () {} )();
+                            _bind_functions();
                         }, 100);
                     }, T - t * 2);
                 }, t);
@@ -348,7 +351,7 @@
      *  k: previous item
      *
      **/
-    function _bind_keys () {
+    function _bind_functions () {
         // click
         $('body').click(function (ev) {
             var b_wipe = ev.shiftKey ? false : true;
@@ -388,6 +391,13 @@
         });
     }
 
+    function _unbind_functions () {
+        $('body')
+            .unbind('click')
+            .unbind('keydown')
+        ;
+    }
+
 
 
 
@@ -395,7 +405,7 @@
     window.__main = function () {
         _setup_geso();
         _setup_slides();
-        _bind_keys();
+        _bind_functions();
     };
 
 })();
