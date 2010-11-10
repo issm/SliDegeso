@@ -23,36 +23,72 @@ body {
 
 #gesogeso .geso {
     position: absolute;
-    width: 1920px;
-    height: 1920px;
     -webkit-transform-origin: center center;
     -webkit-animation-duration: 0.6s;
     -webkit-animation-timing-function: linear;
     -webkit-animation-iteration-count: 0;
 }
 
+#gesogeso .geso-s {
+    width: 1440px;
+    height: 1440px;
+}
+
+#gesogeso .geso-m {
+    width: 1920px;
+    height: 1920px;
+}
+
+
 #gesogeso-geso-1 {
     z-index: 100001;
-    left: -1120px; /* - (960 + 160) */
-    background: url(../img/geso1_wiped.png) left top no-repeat;
+    background-position: left top;
+    background-repeat: no-repeat;
     -webkit-transform: rotate(0deg);
     -webkit-animation-name: 'gesogeso-geso-1-anim';
 }
 
 #gesogeso-geso-2 {
     z-index: 100002;
-    right: -1120px; /* - (960 + 160) */
-    background: url(../img/geso2_wiped.png) right center no-repeat;
+    background-position: right center;
+    background-repeat: no-repeat;
     -webkit-transform: rotate(0deg);
     -webkit-animation-name: 'gesogeso-geso-2-anim';
 }
 
 #gesogeso-geso-3 {
     z-index: 100003;
-    top: -1120px; /* - (960 + 160) */
-    background: url(../img/geso3_wiped.png) center top no-repeat;
+    background-position: center top;
+    background-repeat: no-repeat;
     -webkit-transform: rotate(0deg);
     -webkit-animation-name: 'gesogeso-geso-3-anim';
+}
+
+
+#gesogeso-geso-1.geso-s {
+    left: -840px; /* - (720 + 160 * 3/4) */
+    background-image: url(../img/geso_wiped_1s.png);
+}
+#gesogeso-geso-2.geso-s {
+    right: -840px; /* - (720 + 160 * 3/4) */
+    background-image: url(../img/geso_wiped_2s.png);
+}
+#gesogeso-geso-3.geso-s {
+    top: -840px; /* - (720 + 160 * 3/4) */
+    background-image: url(../img/geso_wiped_3s.png);
+}
+
+#gesogeso-geso-1.geso-m {
+    left: -1120px; /* - (960 + 160) */
+    background-image: url(../img/geso_wiped_1m.png);
+}
+#gesogeso-geso-2.geso-m {
+    right: -1120px; /* - (960 + 160) */
+    background-image: url(../img/geso_wiped_2m.png);
+}
+#gesogeso-geso-3.geso-m {
+    top: -1120px; /* - (960 + 160) */
+    background-image: url(../img/geso_wiped_3m.png);
 }
 
 

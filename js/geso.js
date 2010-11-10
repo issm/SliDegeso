@@ -1,8 +1,17 @@
 (function () {
+    var _root = this;
+    _root.geso_rate = {
+        s:  1440 / 1920,
+        m:  1920 / 1920
+    };
+    _root.size = 'm';
+
 
     function _setup_geso () {
         // <link rel="stylesheet" type="text/css" href="css/geso.css" />
         //$('<link rel="stylesheet" type="text/css" href="css/geso.css" />').appendTo('body');
+
+        _select_geso_size();
 
         // <div id="gesogeso">
         //   <div class="geso" id="gesogeso-geso-1"></div>
@@ -16,15 +25,15 @@
             .attr({ id: 'gesogeso' })
             // #gesogeso-geso-1
             .append(
-                $(empty_div).addClass('geso').attr({ id: 'gesogeso-geso-1' })
+                $(empty_div).addClass('geso').addClass('geso-' + size).attr({ id: 'gesogeso-geso-1' })
             )
             // #gesogeso-geso-2
             .append(
-                $(empty_div).addClass('geso').attr({ id: 'gesogeso-geso-2' })
+                $(empty_div).addClass('geso').addClass('geso-' + size).attr({ id: 'gesogeso-geso-2' })
             )
             // #gesogeso-geso-3
             .append(
-                $(empty_div).addClass('geso').attr({ id: 'gesogeso-geso-3' })
+                $(empty_div).addClass('geso').addClass('geso-' + size).attr({ id: 'gesogeso-geso-3' })
             )
             // #geso-wiped
             .append(
@@ -34,6 +43,24 @@
         ;
 
         _fix_geso_position();
+    }
+
+
+    function _select_geso_size () {
+        var w = $(window).width()
+          , h = $(window).height()
+        ;
+
+        switch (true) {
+        case w <= 1096  &&  h <= 870:
+            _root.size = 's';
+            break;
+        case w <= 1680  &&  h <= 860:
+            _root.size = 'm';
+            break;
+        default:
+            _root.size = 'm';
+        }
     }
 
 
@@ -48,11 +75,11 @@
         ;
 
         $geso1.css({
-            top: h_w - parseInt( $geso1.height() / 2 ) + 160
+            top: h_w - parseInt( $geso1.height() / 2 ) + parseInt( 160 * geso_rate[size] )
         });
 
         $geso2.css({
-            top: h_w - parseInt( $geso1.height() / 2 ) + 160
+            top: h_w - parseInt( $geso1.height() / 2 ) + parseInt( 160 * geso_rate[size] )
         });
 
         $geso3.css({
