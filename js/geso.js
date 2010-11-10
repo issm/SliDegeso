@@ -382,6 +382,27 @@
 
 
 
+    function _show_help () {
+        var usage = [
+            '/**',
+            ' *  CLick:              next item',
+            ' *  Shift + Click:      next item without wiping',
+            ' *',
+            ' *  Enter:              next page with wiping',
+            ' *  Shift + Enter:      next page without wiping',
+            ' *  BackSpace:          previous page with wiping',
+            ' *  Shift + BackSpace:  previous page without wiping',
+            ' *',
+            ' *  j: next item',
+            ' *  k: previous item',
+            ' *',
+            ' *  h, ?: show this help',
+            ' **/',
+        ].join('\n');
+
+        alert(usage);
+    }
+
 
 
 
@@ -398,6 +419,7 @@
      *  j: next item
      *  k: previous item
      *
+     *  h, ?: help
      **/
     function _bind_functions () {
         // click
@@ -435,6 +457,13 @@
                 return false;
                 break;
 
+
+            // h, ?
+            case 72:
+            case 191:
+                if (ev.keyCode == 191 && !ev.shiftKey) { return; }
+                _show_help();
+                break;
             }
         });
     }
