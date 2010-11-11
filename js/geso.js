@@ -5,6 +5,7 @@
         m:  1920 / 1920
     };
     _root.size = 'm';
+    _root.help_showed = false;
 
 
     function _setup_geso () {
@@ -422,23 +423,42 @@
 
     function _show_help () {
         var usage = [
-            '/**',
-            ' *  CLick:              next item',
-            ' *  Shift + Click:      next item without wiping',
-            ' *',
-            ' *  Enter:              next page with wiping',
-            ' *  Shift + Enter:      next page without wiping',
-            ' *  BackSpace:          previous page with wiping',
-            ' *  Shift + BackSpace:  previous page without wiping',
-            ' *',
-            ' *  j: next item',
-            ' *  k: previous item',
-            ' *',
-            ' *  h, ?: show this help',
-            ' **/',
+            '',
+            '  Click:           NEXT     item',
+            '',
+            '  Enter:           NEXT     item',
+            '  BackSpace:       PREVIOUS item',
+            '',
+            '  j:               NEXT     item',
+            '  k:               PREVIOUS item',
+            '',
+            '  Down:            NEXT     page',
+            '  Command + Down:  LAST     page',
+            '  Up:              PREVIOUS page',
+            '  Command + Up:    FIRST    page',
+            '',
+            '  Shift + (commands above): * "without" wiping',
+            '',
+            '  h, ?:            show/hide this help',
         ].join('\n');
 
-        alert(usage);
+        var $help = $('#geso-help');
+        if (!$help.size()) {
+            $help = $('<section></section>')
+                .attr('id', 'geso-help')
+                .append(
+                    $('<pre></pre>').text(usage)
+                )
+                .appendTo('body')
+            ;
+            $help.css({
+                width:  $(window).width()  - 20 - 20,
+                height: $(window).height() - 20 - 20
+            });
+        }
+
+        _root.help_showed ? $help.hide() : $help.show();
+        _root.help_showed = ! _root.help_showed;
     }
 
 
@@ -495,22 +515,6 @@
 
 
 
-
-    /**
-     *
-     *  CLick:              next item
-     *  Shift + Click:      next item without wiping
-     *
-     *  Enter:              next page with wiping
-     *  Shift + Enter:      next page without wiping
-     *  BackSpace:          previous page with wiping
-     *  Shift + BackSpace:  previous page without wiping
-     *
-     *  j: next item
-     *  k: previous item
-     *
-     *  h, ?: help
-     **/
     function _bind_functions () {
         // click
         $('body').click(function (ev) {

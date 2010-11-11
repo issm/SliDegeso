@@ -124,6 +124,15 @@ body {
 
 
 
+#geso-help {
+    display: none;
+}
+#geso-help pre {
+    font-size: 28px;
+}
+
+
+
 
 
 article {
