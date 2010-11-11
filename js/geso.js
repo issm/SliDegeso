@@ -553,11 +553,13 @@
             case 38:
                 if (ev.metaKey) { _first_page(b_wipe); }
                 else            { _prev_page(b_wipe);  }
+                return false;
                 break;
             // ↓
             case 40:
                 if (ev.metaKey) { _last_page(b_wipe); }
                 else            { _next_page(b_wipe); }
+                return false;
                 break;
 
 
