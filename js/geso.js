@@ -532,7 +532,8 @@
 
             // backspace
             case 8:
-                _prev_page(b_wipe);
+                //_prev_page(b_wipe);
+                _prev_item(b_wipe);
                 return false;
                 break;
 
