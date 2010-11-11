@@ -191,7 +191,6 @@
 
         _fix_slides ();
         _fix_pre_content();
-        _show_page(0, 0);
     }
 
 
@@ -258,43 +257,81 @@
         _setup_items( p >= p_from ? false : true );
         _update_navigator();
 
-        // modify url
-        var url_hash = '#!/page/' + p;
-        if ( /(?:#.*$)/.test(location.href) ) {
-            location.href = location.href.replace( /(?:#.*$)/, url_hash );
-        }
-        else {
-            location.href += url_hash;
-        }
-
         return true;
     }
 
     function _next_page (b) {
-        if (b) {
-            if ( _is_valid_page( __data.current_page + 1 ) ) {
-                _wipe(function () {
-                    _show_page( __data.current_page + 1, __data.current_page );
-                });
+        var tpl_h = '#!/page/{%p%}/from/{%p_from%}';
+
+        if ( _is_valid_page( __data.current_page + 1 ) ) {
+            var h = tpl_h
+                .replace('{%p%}',      __data.current_page + 1)
+                .replace('{%p_from%}', __data.current_page)
+            ;
+
+            if (b) {
+                _wipe(function () { location.hash = h; });
             }
-        }
-        else {
-            _show_page( __data.current_page + 1, __data.current_page );
+            else {
+                location.hash = h;
+            }
         }
     }
 
     function _prev_page (b) {
-        if (b) {
-            if ( _is_valid_page( __data.current_page - 1 ) ) {
-                _wipe(function () {
-                    _show_page( __data.current_page - 1, __data.current_page );
-                });
+        var tpl_h = '#!/page/{%p%}/from/{%p_from%}';
+
+        if ( _is_valid_page( __data.current_page - 1 ) ) {
+            var h = tpl_h
+                .replace('{%p%}',      __data.current_page - 1)
+                .replace('{%p_from%}', __data.current_page)
+            ;
+
+            if (b) {
+                _wipe(function () { location.hash = h; });
+            }
+            else {
+                location.hash = h;
             }
         }
-        else {
-            _show_page( __data.current_page - 1, __data.current_page );
+    }
+
+    function _first_page (b) {
+        var tpl_h = '#!/page/{%p%}/from/{%p_from%}';
+
+        if ( _is_valid_page( 0 ) ) {
+            var h = tpl_h
+                .replace('{%p%}',      0)
+                .replace('{%p_from%}', __data.current_page)
+            ;
+
+            if (b) {
+                _wipe(function () { location.hash = h; });
+            }
+            else {
+                location.hash = h;
+            }
         }
     }
+
+    function _last_page (b) {
+        var tpl_h = '#!/page/{%p%}/from/{%p_from%}';
+
+        if ( _is_valid_page( __data.pages - 1 ) ) {
+            var h = tpl_h
+                .replace('{%p%}',      __data.pages - 1)
+                .replace('{%p_from%}', __data.current_page)
+            ;
+
+            if (b) {
+                _wipe(function () { location.hash = h; });
+            }
+            else {
+                location.hash = h;
+            }
+        }
+    }
+
 
 
     function _setup_items (b_back) {
@@ -405,6 +442,58 @@
 
 
 
+    /**
+     *
+     * URLハッシュを基づいたアクションを実行する
+     *
+     *   _route();      // location.hash を参照
+     *   _route(hash);  // hash を参照
+     *
+     **/
+    function _route (h_to) {
+        var pre = '#!';
+        var h = location.hash.replace(pre, '');
+        h_to = (typeof h_to != 'undefined' ? h_to : '').replace(pre, '');
+        var m = []; // matched
+
+
+        var re_page = new RegExp('/page/([0-9]+)(?:/from/([0-9]*)/?)?');
+
+        var tpl_page = pre + '/page/{%p%}/from/{%p_from%}';
+
+        // URLハッシュも指定もない
+        if (h_to == ''  &&  h == '') {
+            _show_page(0, 0);
+            location.hash = pre + '/page/0';
+            return true;
+        }
+
+        // 指定，もしくは URLハッシュが #!/page/{p}
+        m = ( h_to != '' ? h_to : h ).match(re_page);
+
+        if ( m != null ) {
+            var p      = parseInt( m[1] || 0 )
+              , p_from = parseInt( m[2] || 0 )
+            if (_is_valid_page(p) ) {
+                location.hash = tpl_page
+                    .replace('{%p%}',      p)
+                    .replace('{%p_from%}', p_from)
+                ;
+                _show_page(p, p_from);
+                return true;
+            }
+            else {
+                //_route('/page/0');
+                location.hash = '#!/page/0';
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+
+
 
     /**
      *
@@ -435,7 +524,8 @@
             switch (ev.keyCode) {
             // enter
             case 13:
-                _next_page(b_wipe);
+                //_next_page(b_wipe);
+                _next_item(b_wipe);
                 return false;
                 break;
 
@@ -457,6 +547,17 @@
                 return false;
                 break;
 
+            // ↑
+            case 38:
+                if (ev.metaKey) { _first_page(b_wipe); }
+                else            { _prev_page(b_wipe);  }
+                break;
+            // ↓
+            case 40:
+                if (ev.metaKey) { _last_page(b_wipe); }
+                else            { _next_page(b_wipe); }
+                break;
+
 
             // h, ?
             case 72:
@@ -476,6 +577,30 @@
     }
 
 
+    /**
+     *
+     * URL変化を感知する
+     *
+     *   1. _root.handle_url_change(url, url_before) を定義する
+     *   2. listen_url_change() する
+     *
+     */
+    function _listen_url_change (interval) {
+        _root.__urlchev__url_before = location.href;
+        _root.__urlchev__timer = setInterval(function () {
+            if (location.href != __urlchev__url_before) {
+                (_root.handle_url_change || function () {}) (location.href, __urlchev__url_before);
+                __urlchev__url_before = location.href;
+            }
+        }, interval || 50);
+    }
+
+    // URL変化時のハンドラ
+    _root.handle_url_change = function (url, url_before) {
+        var m = url.match(/#!(.*)$/);
+        var h = m[1] || '';
+        _route(h);
+    };
 
 
 
@@ -483,6 +608,8 @@
         _setup_geso();
         _setup_slides();
         _bind_functions();
+        _listen_url_change();
+        _route();
     };
 
 })();
