@@ -118,16 +118,16 @@
             '-webkit-animation-duration': ((T - t * 2) / 1000) + 's'
         });
 
-        setTimeout(function () {                 // 1
+        setTimeout(function () {  // ----------------- 1st geso
             _wipe_a_geso(1);
-            setTimeout(function () {             // 2
+            setTimeout(function () {  //-------------- 2nd geso
                 _wipe_a_geso(2);
-                setTimeout(function () {         // 3
+                setTimeout(function () {  // --------- 3rd geso
                     _wipe_a_geso(3);
-                    setTimeout(function () {     // wiped screen
+                    setTimeout(function () {  // ----- wiped screen
                         _wiped_screen(true);
                         __data.current_slide.hide();
-                        setTimeout(function () { // clear wiped
+                        setTimeout(function () { // -- clear wiped
                             _wiped_screen(false);
                             ( callback || function () {} )();
                             _bind_functions();
