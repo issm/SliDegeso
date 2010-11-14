@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>geso</title>
+  <title>SliDegesoサンプル</title>
 
   <link rel="stylesheet" type="text/css" href="css/slidegeso.css" />
 
@@ -13,10 +13,14 @@
 <article>
 
   <header>
-    <h1>「イカワイパー」的に<br />ページ切り替えを行う<br />プレゼンツールを作ってみた</h1>
+    <h1>「イカワイパー」で<br />ページ切り替えを行う<br />プレゼンツール「SliDegeso」</h1>
     <address>
-      LLP メガネラボ<br />
-      岩田 享 / @issm
+      <code>
+        SliDegeso-0.0001
+        @issm
+        <br />
+        type "?" to show help
+      </code>
     </address>
   </header>
 
@@ -25,76 +29,277 @@
     <h1>アジェンダ</h1>
 
     <ul>
-      <li>自己紹介</li>
-      <li>自己紹介自己紹介自己紹介自己紹介自己紹介自己紹介自己紹介自己紹介自己紹介自己紹介自己紹介自己紹介</li>
+      <li>概要</li>
+      <li>基本的な使い方</li>
+      <li>タイトルページの定義</li>
+      <li>おしまいページの定義</li>
+      <li>スライドページの定義</li>
+      <li>スライド内容の定義</li>
+      <li>その他特徴</li>
+      <li>まとめ</li>
     </ul>
   </section>
 
+
+
   <section>
-    <h1>ほげほげ</h1>
+    <h1>概要</h1>
+
+    <p>スライドの切り替えの際に「イカワイパー」が発動するでゲソ</p>
+    <p>．．．それだけでゲソ</p>
+  </section>
+
+
+
+
+  <section>
+    <h1>基本的な使い方</h1>
+
+    <p>CSS，JavaScriptを読み込む</p>
+
+    <pre lang="html">
+      &lt;head&gt;
+        ...
+        &lt;link rel="stylesheet" type="text/css"
+              href="css/slidegeso.css" /&gt;
+        &lt;script type="text/javascript"
+              src="js/jquery-1.4.3.min.js"&gt;&lt;/script&gt;
+        &lt;script type="text/javascript"
+              src="js/slidegeso.js"&gt;&lt;/script&gt;
+      &lt;/head&gt;
+    </pre>
+  </section>
+
+
+  <section>
+    <h1>基本的な使い方</h1>
+
+    <p>スライドをHTML5っぽく記述する</p>
+
+    <pre lang="html">
+      &lt;body&gt;
+        &lt;article&gt;
+          &lt;header&gt;...&lt;/header&gt;    &lt;!-- タイトル  --&gt;
+          &lt;section&gt;...&lt;/section&gt;  &lt;!-- スライド1 --&gt;
+          &lt;section&gt;...&lt;/section&gt;  &lt;!-- スライド2 --&gt;
+          &lt;section&gt;...&lt;/section&gt;  &lt;!-- スライド3 --&gt;
+          ...
+          &lt;footer&gt;...&lt;/footer&gt;    &lt;!-- おしまい  --&gt;
+        &lt;/article&gt;
+      &lt;/body&gt;
+    </pre>
+  </section>
+
+
+  <section>
+    <h1>タイトルページの定義</h1>
+
+    <pre lang="html">
+      &lt;header&gt;
+        &lt;h1&gt;タイトル名&lt;/h1&gt;
+        &lt;address&gt;
+          発表者情報とか
+        &lt;/address&gt;
+      &lt;/header&gt;
+    </pre>
+  </section>
+
+
+  <section>
+    <h1>おしまいページの定義</h1>
+
+    <pre lang="html">
+      &lt;footer&gt;
+        &lt;h1&gt;おしまい&lt;/h1&gt;
+        &lt;p&gt;ご静聴ありがとうございました！&lt;/p&gt;
+      &lt;/footer&gt;
+    </pre>
+  </section>
+
+
+  <section>
+    <h1>スライドページの定義</h1>
+
+    <pre lang="html">
+      &lt;section&gt;
+        &lt;h1&gt;見出し&lt;/h1&gt;
+
+        スライドの内容
+      &lt;/section&gt;
+    </pre>
+  </section>
+
+
+  <section>
+    <h1>スライド内容の定義</h1>
+    <p>タグで囲むと1つの表示単位になる</p>
 
     <ul>
-      <li>ほげほげ</li>
-      <li>ほげほげ</li>
-      <li>ほげほげ</li>
-      <li>ほげほげ</li>
-      <li>ほげほげ</li>
-      <li>ほげほげ</li>
-      <li>ほげほげ</li>
+      <li><code>&lt;p&gt;</code></li>
+      <li><code>&lt;pre&gt;</code></li>
+      <li><code>&lt;ul&gt;&lt;li&gt;</code></li>
+      <li><code>&lt;ol&gt;&lt;li&gt;</code></li>
+      <li><code>&lt;img&gt;</code></li>
+    </ul>
+
+    <p>あまり複雑なことはできないかと</p>
+  </section>
+
+
+  <section>
+    <h1>スライド内容の定義</h1>
+    <h2>テキストを順次表示する</h2>
+
+    <p>このテキストは最初に表示されます</p>
+    <p>このテキストは2番目に表示されます</p>
+  </section>
+  <section>
+    <h1>スライド内容の定義</h1>
+    <h2>テキストを順次表示する</h2>
+
+    <pre lang="html">
+      &lt;p&gt;このテキストは最初に表示されます&lt;/p&gt;
+      &lt;p&gt;このテキストは2番目に表示されます&lt;/p&gt;
+    </pre>
+  </section>
+
+
+
+  <section>
+    <h1>スライド内容の定義</h1>
+    <h2>箇条書きする</h2>
+
+    <ul>
+      <li>要素 その1</li>
+      <li>
+        要素 その2
+        <ol>
+          <li>要素 その2-1</li>
+          <li>要素 その2-2</li>
+        </ol>
+      </li>
+      <li>要素 その3</li>
     </ul>
   </section>
+  <section>
+    <h1>スライド内容の定義</h1>
+    <h2>箇条書きする</h2>
+
+    <pre lang="html">
+      &lt;ul&gt;
+        &lt;li&gt;要素 その1&lt;/li&gt;
+        &lt;li&gt;
+          要素 その2
+          &lt;ol&gt;
+            &lt;li&gt;要素 その2-1&lt;/li&gt;
+            &lt;li&gt;要素 その2-2&lt;/li&gt;
+          &lt;/ol&gt;
+        &lt;/li&gt;
+        &lt;li&gt;要素 その3&lt;/li&gt;
+      &lt;/ul&gt;
+    </pre>
+  </section>
+
+
 
 
   <section>
-    <h1>ふがふが</h1>
+    <h1>スライド内容の定義</h1>
+    <h2>画像を右に表示する</h2>
 
-    <p>ふがふがふがふがふがふがふがふがふがふがふがふがふがふがふがふがふがふがふがふがふがふがふがふがふがふがふがふが．</p>
-    <p>ふがふがふがふがふがふがふがふがふがふがふがふがふがふがふがふがふがふがふがふがふがふがふがふがふがふがふがふが．</p>
+    <img class="r" src="img/geso0.png" height="360" />
+  </section>
+  <section>
+    <h1>スライド内容の定義</h1>
+    <h2>画像を右に表示する</h2>
+
+    <pre lang="html">
+      &lt;img class="r" src="..." /&gt;
+    </pre>
   </section>
 
 
   <section>
-    <h1>サンプルコード 1</h1>
+    <h1>スライド内容の定義</h1>
+    <h2>画像を中央に表示する</h2>
+
+    <img class="c" src="img/geso0.png" height="360" />
+  </section>
+  <section>
+    <h1>スライド内容の定義</h1>
+    <h2>画像を中央に表示する</h2>
+
+    <pre lang="html">
+      &lt;img class="c" src="..." /&gt;
+    </pre>
+  </section>
+
+
+  <section>
+    <h1>スライド内容の定義</h1>
+    <h2>サンプルコードを表示する</h2>
 
     <pre lang="perl">
       use strict;
       use warnings;
-
-
-    </pre>
-
-    <pre lang="perl">
       my $app = sub {
           my $env = shift;
           return [
               200,
               [ 'Content-Type' =&gt; 'text/plain' ],
-              [ "Hello World" ],
+              [ "Hello World de geso" ],
           ];
       };
     </pre>
   </section>
+  <section>
+    <h1>スライド内容の定義</h1>
+    <h2>サンプルコードを表示する</h2>
+
+    <pre lang="html">
+    &lt;pre lang="perl"&gt;
+      use strict;
+      use warnings;
+      my $app = sub {
+          my $env = shift;
+          return [
+              200,
+              [ 'Content-Type' =&gt; 'text/plain' ],
+              [ "Hello World de geso" ],
+          ];
+      };
+    &lt;/pre&gt;
+    </pre>
+  </section>
+
 
 
   <section>
-    <h1>サンプルコード 2</h1>
+    <h1>その他特徴</h1>
 
-    <pre>
-      (function () {
-          ...
-      })();
-    </pre>
+    <ul>
+      <li>
+        URLで表示ページを指定可能
+        <pre lang="">
+          {スライドのURL}#!/page/{ページ}
+        </pre>
+      </li>
+    </ul>
   </section>
+
+
 
 
   <section>
     <h1>まとめ</h1>
 
     <ul>
-      <li>侵略</li>
-      <li>侵略</li>
-      <li>侵略</li>
-      <li>侵略</li>
+      <li>HTML5っぽく書くと「イカワイパー」が発動するスライドができあがるでゲソ</li>
+      <li>スライドの定義方法は今後大きく変わる可能性があるでゲソ</li>
+      <li>侵略！</li>
+      <li>侵略！</li>
+      <li>侵略！</li>
+      <li>侵略！</li>
     </ul>
   </section>
 
@@ -102,7 +307,14 @@
 
 
   <footer>
-    <p>ご静聴ありがとうございました！</p>
+    <h1>おしまい</h1>
+
+    <p>ご静聴ありがとうでゲソ！</p>
+    <ul>
+      <li><a href="https://github.com/issm/SliDegeso">https://github.com/issm/SliDegeso</a></li>
+      <li><a href="http://blog.iwa-ya.net/">http://blog.iwa-ya.net/</a></li>
+      <li><a href="http://twitter.com/issm">http://twitter.com/issm</a></li>
+    </ul>
   </footer>
 
 </article>
