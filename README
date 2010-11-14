@@ -1,0 +1,44 @@
+NAME
+
+SliDegeso - A tool for presentation de geso.
+
+SYNOPSIS
+
+  <head>
+    <link rel="stylesheet" type="text/css" href="css/slidegeso.css" />
+    <script type="text/javascript" src="js/jquery-1.4.3.min.js"></script>
+    <script type="text/javascript" src="js/slidegeso.js"></script>
+  </head>
+  <body>
+    <article>
+      <header>
+        <h1>Slide's Title</h1>
+        <address>Author's info</address>
+      </header>
+  
+      <section>
+        <h1>Slide Page 1</h1>
+        <p>text1</p>
+        <p>text2</p>
+      </section>
+
+      <section>
+        <h1>Slide Page 2</h1>
+        <ul>
+          <li>item1</li>
+          <li>item2</li>
+          <li>item3</li>
+        </ul>
+      </section>
+  
+      ...
+  
+      <footer>
+        <h1>:)</h1>
+        <p>Thank you!</p>
+      </footer>
+    </article>
+  </body>
+
+
+For detail, download and open "sample.html".
