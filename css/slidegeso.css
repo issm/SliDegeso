@@ -169,9 +169,9 @@ footer  > * {
     margin-left:  40px;
 }
 
-header h1,
+header  h1,
 section h1,
-footer h1 {
+footer  h1 {
     margin: 0px 0 20px;
     padding: 5px 0;
     border-bottom: 7px solid #4de5ff;
@@ -181,6 +181,12 @@ footer h1 {
     font-size: 56px;
 }
 
+header  h2,
+section h2,
+footer  h2 {
+    margin-bottom: 20px;
+    font-size: 40px;
+}
 
 
 
