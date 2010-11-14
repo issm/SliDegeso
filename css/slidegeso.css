@@ -203,6 +203,10 @@ header address {
 }
 
 
+a {
+    color: #333;
+}
+
 p {
     margin-bottom: 15px;
 }
@@ -218,6 +222,29 @@ ol {
 ul li,
 ol li {
     margin-bottom: 10px;
+}
+
+li ul,
+li ol {
+    margin-top: 10px;
+}
+
+
+img {
+    padding: 8px;
+    border: 2px solid #4de5ff;
+    border-radius: 10px;
+    display: block;
+    background: #fff;
+}
+
+img.r {
+    margin: 0 10px;
+    float: right;
+}
+
+img.c {
+    margin: 0 auto;
 }
 
 
