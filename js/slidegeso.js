@@ -1,632 +1,416 @@
-(function () {
-    var _root = this;
-    _root.VERSION = '0.0001';
-    _root.geso_rate = {
-        s:  1440 / 1920,
-        m:  1920 / 1920
+(function() {
+  var __main, _alert, _bind_functions, _first_page, _fix_geso_position, _fix_pre_content, _fix_slides, _is_valid_page, _last_page, _listen_url_change, _next_item, _next_page, _prev_item, _prev_page, _root, _route, _select_geso_size, _setup_geso, _setup_items, _setup_slides, _show_help, _show_page, _unbind_functions, _update_navigator, _wipe, _wipe_a_geso, _wiped_screen;
+  _root = this;
+  _root.VERSION = '0.0001';
+  _root.geso_rate = {
+    s: 1440 / 1920,
+    m: 1920 / 1920
+  };
+  _root.size = 'm';
+  _root.help_showed = false;
+  _setup_geso = function() {
+    _select_geso_size();
+    $("<div id=\"gesogeso\">\n  <div class=\"geso geso-" + size + "\" id=\"gesogeso-geso-1\"></div>\n  <div class=\"geso geso-" + size + "\" id=\"gesogeso-geso-2\"></div>\n  <div class=\"geso geso-" + size + "\" id=\"gesogeso-geso-3\"></div>\n  <div id=\"geso-wiped\"></div>\n</div>").appendTo('body');
+    return _fix_geso_position();
+  };
+  _select_geso_size = function() {
+    var h, w;
+    w = $(window).width();
+    h = $(window).height();
+    switch (true) {
+      case w <= 1096 && h <= 870:
+        return _root.size = 's';
+      case w <= 1680 && h <= 860:
+        return _root.size = 'm';
+      default:
+        return _root.size = 'm';
+    }
+  };
+  _fix_geso_position = function() {
+    var $geso1, $geso2, $geso3, h_w, w_w;
+    $geso1 = $('#gesogeso-geso-1');
+    $geso2 = $('#gesogeso-geso-2');
+    $geso3 = $('#gesogeso-geso-3');
+    w_w = $(window).width();
+    h_w = $(window).height();
+    $geso1.css({
+      top: h_w - parseInt($geso1.height() / 2) + parseInt(160 * geso_rate[size])
+    });
+    $geso2.css({
+      top: h_w - parseInt($geso1.height() / 2) + parseInt(160 * geso_rate[size])
+    });
+    $geso3.css({
+      left: parseInt((w_w - $geso3.width()) / 2)
+    });
+    return $('#geso-wiped').css({
+      width: $(window).width(),
+      height: $(document).height()
+    });
+  };
+  _wipe = function(callback) {
+    var $geso1, $geso2, $geso3, T, t, _ref;
+    _ref = [1500, 400], T = _ref[0], t = _ref[1];
+    _unbind_functions();
+    $geso1 = $('#gesogeso-geso-1');
+    $geso2 = $('#gesogeso-geso-2');
+    $geso3 = $('#gesogeso-geso-3');
+    $geso1.css({
+      '-webkit-animation-iteration-count': '0',
+      '-webkit-animation-duration': (T / 1000) + 's'
+    });
+    $geso2.css({
+      '-webkit-animation-iteration-count': '0',
+      '-webkit-animation-duration': ((T - t) / 1000) + 's'
+    });
+    $geso3.css({
+      '-webkit-animation-iteration-count': '0',
+      '-webkit-animation-duration': ((T - t * 2) / 1000) + 's'
+    });
+    return setTimeout(function() {
+      _wipe_a_geso(1);
+      return setTimeout(function() {
+        _wipe_a_geso(2);
+        return setTimeout(function() {
+          _wipe_a_geso(3);
+          return setTimeout(function() {
+            _wiped_screen(true);
+            __data.current_slide.hide();
+            return setTimeout(function() {
+              _wiped_screen(false);
+              (callback != null ? callback : function() {})();
+              return _bind_functions();
+            }, 100);
+          }, T - t * 2);
+        }, t);
+      }, t);
+    }, 0);
+  };
+  _wipe_a_geso = function(i) {
+    var $geso_target;
+    $geso_target = $("#gesogeso-geso-" + i);
+    $geso_target.css({
+      '-webkit-animation-iteration-count': '1'
+    });
+    return i;
+  };
+  _wiped_screen = function(b) {
+    if (b) {
+      $('#geso-wiped').show();
+    } else {
+      $('#geso-wiped').hide();
+    }
+    return b;
+  };
+  _setup_slides = function() {
+    var data;
+    data = window.__data = {
+      pages: 0,
+      current_page: 0,
+      slides: [],
+      current_slide: void 0,
+      items: [],
+      current_item: void 0,
+      current_item_index: 0
     };
-    _root.size = 'm';
-    _root.help_showed = false;
-
-
-    function _setup_geso () {
-        // <link rel="stylesheet" type="text/css" href="css/geso.css" />
-        //$('<link rel="stylesheet" type="text/css" href="css/geso.css" />').appendTo('body');
-
-        _select_geso_size();
-
-        // <div id="gesogeso">
-        //   <div class="geso" id="gesogeso-geso-1"></div>
-        //   <div class="geso" id="gesogeso-geso-2"></div>
-        //   <div class="geso" id="gesogeso-geso-3"></div>
-        //   <div id="geso-wiped"></div>
-        // </div>
-        var empty_div = '<div></div>';
-        // #gesogeso
-        $(empty_div)
-            .attr({ id: 'gesogeso' })
-            // #gesogeso-geso-1
-            .append(
-                $(empty_div).addClass('geso').addClass('geso-' + size).attr({ id: 'gesogeso-geso-1' })
-            )
-            // #gesogeso-geso-2
-            .append(
-                $(empty_div).addClass('geso').addClass('geso-' + size).attr({ id: 'gesogeso-geso-2' })
-            )
-            // #gesogeso-geso-3
-            .append(
-                $(empty_div).addClass('geso').addClass('geso-' + size).attr({ id: 'gesogeso-geso-3' })
-            )
-            // #geso-wiped
-            .append(
-                $(empty_div).attr({ id: 'geso-wiped' })
-            )
-            .appendTo('body')
-        ;
-
-        _fix_geso_position();
-    }
-
-
-    function _select_geso_size () {
-        var w = $(window).width()
-          , h = $(window).height()
-        ;
-
-        switch (true) {
-        case w <= 1096  &&  h <= 870:
-            _root.size = 's';
-            break;
-        case w <= 1680  &&  h <= 860:
-            _root.size = 'm';
-            break;
-        default:
-            _root.size = 'm';
+    $('header, section, footer').each(function() {
+      var $slide;
+      $slide = $(this);
+      if ($slide[0].tagName.toLowerCase() === 'section') {
+        $("<div class=\"navigator navigator-more-item\"></div>").appendTo($slide);
+      }
+      data.pages++;
+      return data.slides.push($slide);
+    });
+    _fix_slides();
+    return _fix_pre_content();
+  };
+  _fix_slides = function() {
+    return $('header, section, footer').css({
+      width: $(window).width() - 20 - 20,
+      height: $(window).height() - 20 - 20
+    });
+  };
+  _fix_pre_content = function() {
+    return $('section pre').each(function() {
+      var i, indent_del, lines, re, _dummy, _ref, _ref2, _ref3;
+      lines = $(this).text().replace(/(^ *\n+|\n+ *$)/g, '').split('\n');
+      try {
+        _ref2 = ((_ref = lines[0]) != null ? _ref : '').match(/^( *)/), _dummy = _ref2[0], indent_del = _ref2[1];
+        re = new RegExp('^' + indent_del);
+        for (i = 0, _ref3 = lines.length; 0 <= _ref3 ? i < _ref3 : i > _ref3; 0 <= _ref3 ? i++ : i--) {
+          lines[i] = lines[i].replace(re, '');
         }
+        return $(this).text(lines.join('\n'));
+      } catch (ex) {
+        return _alert(ex);
+      }
+    });
+  };
+  _is_valid_page = function(p) {
+    if (p < __data.pages && p >= 0) {
+      return true;
+    } else {
+      return false;
     }
-
-
-    function _fix_geso_position () {
-        var $geso1 = $('#gesogeso-geso-1')
-          , $geso2 = $('#gesogeso-geso-2')
-          , $geso3 = $('#gesogeso-geso-3')
-        ;
-
-        var w_w = $(window).width()
-          , h_w = $(window).height()
-        ;
-
-        $geso1.css({
-            top: h_w - parseInt( $geso1.height() / 2 ) + parseInt( 160 * geso_rate[size] )
-        });
-
-        $geso2.css({
-            top: h_w - parseInt( $geso1.height() / 2 ) + parseInt( 160 * geso_rate[size] )
-        });
-
-        $geso3.css({
-            left: parseInt( (w_w - $geso3.width()) / 2 )
-        });
-
-
-        // #geso-wiped
-        $('#geso-wiped').css({
-            width:  $(window).width(),
-            height: $(document).height()
-        });
-
+  };
+  _show_page = function(p, p_from) {
+    var data;
+    data = __data;
+    if (!_is_valid_page(p)) {
+      return false;
     }
-
-    function _wipe (callback) {
-        var T = 1500;
-        var t = 400;
-
-        _unbind_functions();
-
-        var $geso1 = $('#gesogeso-geso-1')
-          , $geso2 = $('#gesogeso-geso-2')
-          , $geso3 = $('#gesogeso-geso-3')
-        ;
-        $geso1.css({
-            '-webkit-animation-iteration-count': '0',
-            '-webkit-animation-duration': (T / 1000) + 's'
-        });
-        $geso2.css({
-            '-webkit-animation-iteration-count': '0',
-            '-webkit-animation-duration': ((T - t) / 1000) + 's'
-        });
-        $geso3.css({
-            '-webkit-animation-iteration-count': '0',
-            '-webkit-animation-duration': ((T - t * 2) / 1000) + 's'
-        });
-
-        setTimeout(function () {  // ----------------- 1st geso
-            _wipe_a_geso(1);
-            setTimeout(function () {  //-------------- 2nd geso
-                _wipe_a_geso(2);
-                setTimeout(function () {  // --------- 3rd geso
-                    _wipe_a_geso(3);
-                    setTimeout(function () {  // ----- wiped screen
-                        _wiped_screen(true);
-                        __data.current_slide.hide();
-                        setTimeout(function () { // -- clear wiped
-                            _wiped_screen(false);
-                            ( callback || function () {} )();
-                            _bind_functions();
-                        }, 100);
-                    }, T - t * 2);
-                }, t);
-            }, t);
-        }, 0);
+    if (data.current_slide) {
+      data.current_slide.hide();
     }
-
-    function _wipe_a_geso (i) {
-        var $geso_target = $('#gesogeso-geso-' + i);
-        $geso_target.css({
-            '-webkit-animation-iteration-count': '1'
+    try {
+      data.current_slide = data.slides[p].show();
+      data.current_page = p;
+      data.items = [];
+      data.current_item = void 0;
+      data.current_item_index = 0;
+    } catch (ex) {
+      _alert('oops.');
+      return false;
+    }
+    _setup_items((p >= p_from ? false : true));
+    _update_navigator();
+    return true;
+  };
+  _next_page = function(b) {
+    var h, p;
+    p = __data.current_page + 1;
+    if (_is_valid_page(p)) {
+      h = "#!/page/" + p + "/from/" + __data.current_page;
+      if (b) {
+        return _wipe(function() {
+          return location.hash = h;
         });
+      } else {
+        return location.hash = h;
+      }
     }
-
-    function _wiped_screen(b) {
-        b ? $('#geso-wiped').show() : $('#geso-wiped').hide();
-    }
-
-
-
-
-
-
-
-
-
-
-    function _setup_slides () {
-        var data = window.__data = {
-            pages:  0,                  // pages of slides
-            current_page: 0,
-
-            slides: [],                 // array of $slides (head, section, footer)
-            current_slide: undefined,
-
-            items:              [],
-            current_item:       undefined,
-            current_item_index: 0,
-
-            _: 1
-        };
-
-
-        $('header, section, footer').each(function () {
-            var $slide = $(this);
-
-            if ($slide[0].tagName.toLowerCase() == 'section') {
-                $('<div></div>')
-                    .addClass('navigator')
-                    .addClass('navigator-more-item')
-                    .appendTo($slide)
-                ;
-            }
-
-            data.pages++;
-            data.slides.push($slide);
+  };
+  _prev_page = function(b) {
+    var h, p;
+    p = __data.current_page - 1;
+    if (_is_valid_page(p)) {
+      h = "#!/page/" + p + "/from/" + __data.current_page;
+      if (b) {
+        return _wipe(function() {
+          return location.hash = h;
         });
-
-
-        _fix_slides ();
-        _fix_pre_content();
+      } else {
+        return location.hash = h;
+      }
     }
-
-
-
-    function _fix_slides () {
-        $('header, section, footer').css({
-            width:  $(window).width()  - 20 - 20,
-            height: $(window).height() - 20 - 20
+  };
+  _first_page = function(b) {
+    var h, p;
+    p = 0;
+    if (_is_valid_page(p)) {
+      h = "#!/page/" + p + "/from/" + __data.current_page;
+      if (b) {
+        return _wipe(function() {
+          return location.hash = h;
         });
+      } else {
+        return location.hash = h;
+      }
     }
-
-    function _fix_pre_content () {
-        $('section pre').each(function () {
-            var lines =
-                $(this).text()
-                    .replace(/(^ *\n+|\n+ *$)/g, '')
-                    .split('\n');
-            try {
-            var indent_del = (lines[0] || '').match(/^( *)/)[1];
-            var re = new RegExp('^' + indent_del);
-            for (var i = 0; i < lines.length; i++) {
-                lines[i] = lines[i].replace(re, '');
-            }
-            $(this).text(lines.join('\n'));
-            }
-            catch (ex) {
-                alert(ex);
-            }
+  };
+  _last_page = function(b) {
+    var h, p;
+    p = __data.pages - 1;
+    if (_is_valid_page(p)) {
+      h = "#!/page/" + p + "/from/" + __data.current_page;
+      if (b) {
+        return _wipe(function() {
+          return location.hash = h;
         });
+      } else {
+        return location.hash = h;
+      }
     }
-
-
-    function _is_valid_page (p) {
-        return (p < __data.pages  &&  p >= 0) ? true : false;
+  };
+  _setup_items = function(b_back) {
+    var $slide, data, target;
+    target = 'p, pre, ul > li, ol > li, img';
+    data = __data;
+    $slide = data.current_slide;
+    if ($slide[0].tagName.toLowerCase() !== 'section') {
+      return false;
     }
-
-    // p: >= 0
-    function _show_page (p, p_from) {
-        var data = __data;
-
-        if (!_is_valid_page(p)) {
-            return false;
-        }
-
-
-        if (data.current_slide) {
-            data.current_slide.hide();
-        }
-
-        try {
-            data.current_slide = data.slides[p].show();
-            data.current_page = p;
-
-            data.items              = [];
-            data.current_item       = undefined;
-            data.current_item_index = 0;
-        }
-        catch (ex) {
-            alert('oops.');
-            return false;
-        }
-
-
-        _setup_items( p >= p_from ? false : true );
-        _update_navigator();
-
+    $slide.find(target).each(function(i) {
+      var $item;
+      $item = $(this);
+      data.items.push($item);
+      if (!b_back) {
+        return $item.hide();
+      } else {
+        return $item.show();
+      }
+    });
+    if (b_back) {
+      data.current_item_index = data.items.length;
+    }
+  };
+  _next_item = function(b) {
+    var data;
+    data = __data;
+    if (data.items[data.current_item_index]) {
+      data.items[data.current_item_index].show();
+      data.current_item_index++;
+      return _update_navigator();
+    } else {
+      return _next_page(b);
+    }
+  };
+  _prev_item = function(b) {
+    var data;
+    data = __data;
+    if (data.items[data.current_item_index - 1]) {
+      data.current_item_index--;
+      data.items[data.current_item_index].hide();
+      return _update_navigator();
+    } else {
+      return _prev_page(b);
+    }
+  };
+  _update_navigator = function() {
+    var $navi, data;
+    data = __data;
+    $navi = data.current_slide.find('.navigator');
+    if (data.items[data.current_item_index]) {
+      return $navi.removeClass('navigator-next-page').addClass('navigator-more-item');
+    } else {
+      return $navi.removeClass('navigator-more-item').addClass('navigator-next-page');
+    }
+  };
+  _show_help = function() {
+    var $help, usage;
+    usage = "\nClick:           NEXT     item\n\nEnter:           NEXT     item\nBackSpace:       PREVIOUS item\n\nj:               NEXT     item\nk:               PREVIOUS item\n\nDown:            NEXT     page\nCommand + Down:  LAST     page\nUp:              PREVIOUS page\nCommand + Up:    FIRST    page\n\nShift + (commands above): * \"without\" wiping\n\nh, ?:            show/hide this help";
+    $help = $('#geso-help');
+    if (!$help.size()) {
+      $help = $('<section></section>').attr({
+        id: 'geso-help'
+      }).append($('<pre></pre>').text(usage)).appendTo('body');
+      $help.css({
+        width: $(window).width() - 20 - 20,
+        height: $(window).height() - 20 - 20
+      });
+    }
+    if (_root.help_showed) {
+      $help.hide();
+    } else {
+      $help.show();
+    }
+    return _root.help_showed = !_root.help_showed;
+  };
+  _bind_functions = function() {
+    $('body').click(function(ev) {
+      var b_wipe;
+      b_wipe = ev.shiftKey ? false : true;
+      return _next_item(b_wipe);
+    });
+    return $('body').keydown(function(ev) {
+      var b_wipe;
+      b_wipe = ev.shiftKey ? false : true;
+      switch (ev.keyCode) {
+        case 13:
+          _next_item(b_wipe);
+          return false;
+        case 8:
+          _prev_item(b_wipe);
+          return false;
+        case 74:
+          _next_item(b_wipe);
+          return false;
+        case 75:
+          _prev_item(b_wipe);
+          return false;
+        case 80:
+        case 38:
+          if (ev.metaKey) {
+            _first_page(b_wipe);
+          } else {
+            _prev_page(b_wipe);
+          }
+          return false;
+        case 78:
+        case 40:
+          if (ev.metaKey) {
+            _last_page(b_wipe);
+          } else {
+            _next_page(b_wipe);
+          }
+          return false;
+        case 72:
+        case 191:
+          if (ev.keyCode === 191 && !(ev.shiftKey != null)) {
+            return;
+          }
+          return _show_help();
+      }
+    });
+  };
+  _unbind_functions = function() {
+    return $('body').unbind('click').unbind('keydown');
+  };
+  _listen_url_change = function(interval) {
+    _root.__urlchev__url_before = location.href;
+    return _root.__urlchev__timer = setInterval(function() {
+      var _ref;
+      if (location.href !== _root.__urlchev__url_before) {
+        ((_ref = _root.handle_url_change) != null ? _ref : function() {})(location.href, _root.__urlchev__url_before);
+        return _root.__urlchev__url_before = location.href;
+      }
+    }, interval != null ? interval : 50);
+  };
+  _root.handle_url_change = function(url, url_before) {
+    var h, m, _ref;
+    m = url.match(/\#!(.*)$/);
+    h = m != null ? (_ref = m[1]) != null ? _ref : '' : '';
+    return _route(h);
+  };
+  _route = function(h_to) {
+    var h, m, p, p_from, pre, re_page, tpl_page, _ref, _ref2;
+    pre = '#!';
+    h = location.hash.replace(pre, '');
+    h_to = (h_to != null ? h_to : '').replace(pre, '');
+    m = [];
+    re_page = new RegExp('/page/([0-9]+)(?:/from/([0-9]*)/?)?');
+    tpl_page = pre + '/page/{%p%}/from/{%p_from%}';
+    if (h_to === '' && h === '') {
+      _show_page(0, 0);
+      location.hash = pre + '/page/0';
+      return true;
+    }
+    m = (h_to !== '' ? h_to : h).match(re_page);
+    if (m != null) {
+      p = parseInt((_ref = m[1]) != null ? _ref : 0, 10);
+      p_from = parseInt((_ref2 = m[2]) != null ? _ref2 : 0, 10);
+      if (_is_valid_page(p)) {
+        location.hash = tpl_page.replace('{%p%}', p).replace('{%p_from%}', p_from);
+        _show_page(p, p_from);
         return true;
-    }
-
-    function _next_page (b) {
-        var tpl_h = '#!/page/{%p%}/from/{%p_from%}';
-
-        if ( _is_valid_page( __data.current_page + 1 ) ) {
-            var h = tpl_h
-                .replace('{%p%}',      __data.current_page + 1)
-                .replace('{%p_from%}', __data.current_page)
-            ;
-
-            if (b) {
-                _wipe(function () { location.hash = h; });
-            }
-            else {
-                location.hash = h;
-            }
-        }
-    }
-
-    function _prev_page (b) {
-        var tpl_h = '#!/page/{%p%}/from/{%p_from%}';
-
-        if ( _is_valid_page( __data.current_page - 1 ) ) {
-            var h = tpl_h
-                .replace('{%p%}',      __data.current_page - 1)
-                .replace('{%p_from%}', __data.current_page)
-            ;
-
-            if (b) {
-                _wipe(function () { location.hash = h; });
-            }
-            else {
-                location.hash = h;
-            }
-        }
-    }
-
-    function _first_page (b) {
-        var tpl_h = '#!/page/{%p%}/from/{%p_from%}';
-
-        if ( _is_valid_page( 0 ) ) {
-            var h = tpl_h
-                .replace('{%p%}',      0)
-                .replace('{%p_from%}', __data.current_page)
-            ;
-
-            if (b) {
-                _wipe(function () { location.hash = h; });
-            }
-            else {
-                location.hash = h;
-            }
-        }
-    }
-
-    function _last_page (b) {
-        var tpl_h = '#!/page/{%p%}/from/{%p_from%}';
-
-        if ( _is_valid_page( __data.pages - 1 ) ) {
-            var h = tpl_h
-                .replace('{%p%}',      __data.pages - 1)
-                .replace('{%p_from%}', __data.current_page)
-            ;
-
-            if (b) {
-                _wipe(function () { location.hash = h; });
-            }
-            else {
-                location.hash = h;
-            }
-        }
-    }
-
-
-
-    function _setup_items (b_back) {
-        var target = 'p, pre, ul > li, ol > li, img';
-
-        var data = __data;
-        var $slide = data.current_slide;
-
-        if ($slide[0].tagName.toLowerCase() != 'section') {
-            return false;
-        }
-
-        $slide.find(target).each(function (i) {
-            var $item = $(this);
-
-            data.items.push($item);
-
-            // "forward" paging
-            if (!b_back) {
-                $item.hide();
-            }
-            // "backward" paging
-            else {
-                $item.show();
-            }
-        });
-
-        if (b_back) {
-            data.current_item_index = data.items.length;
-        }
-    }
-
-
-
-
-    function _next_item (b) {
-        var data = __data;
-
-        // exists
-        if ( data.items[ data.current_item_index ] ) {
-            data.items[ data.current_item_index ].show();
-            data.current_item_index++;
-            _update_navigator();
-        }
-        //
-        else {
-            _next_page(b);
-        }
-    }
-
-    function _prev_item (b) {
-        var data = __data;
-
-        // exists
-        if ( data.items[ data.current_item_index - 1 ] ) {
-            data.current_item_index--;
-            data.items[ data.current_item_index ].hide();
-            _update_navigator();
-        }
-        //
-        else {
-            _prev_page(b);
-        }
-    }
-
-
-
-    function _update_navigator () {
-        var data = __data;
-        var $navi = data.current_slide.find('.navigator');
-
-        if ( data.items[ data.current_item_index ] ) {
-            $navi
-                .removeClass('navigator-next-page')
-                .addClass('navigator-more-item')
-            ;
-        }
-        else {
-            $navi
-                .removeClass('navigator-more-item')
-                .addClass('navigator-next-page')
-            ;
-        }
-    }
-
-
-
-    function _show_help () {
-        var usage = [
-            '',
-            '  Click:           NEXT     item',
-            '',
-            '  Enter:           NEXT     item',
-            '  BackSpace:       PREVIOUS item',
-            '',
-            '  j:               NEXT     item',
-            '  k:               PREVIOUS item',
-            '',
-            '  Down:            NEXT     page',
-            '  Command + Down:  LAST     page',
-            '  Up:              PREVIOUS page',
-            '  Command + Up:    FIRST    page',
-            '',
-            '  Shift + (commands above): * "without" wiping',
-            '',
-            '  h, ?:            show/hide this help',
-        ].join('\n');
-
-        var $help = $('#geso-help');
-        if (!$help.size()) {
-            $help = $('<section></section>')
-                .attr('id', 'geso-help')
-                .append(
-                    $('<pre></pre>').text(usage)
-                )
-                .appendTo('body')
-            ;
-            $help.css({
-                width:  $(window).width()  - 20 - 20,
-                height: $(window).height() - 20 - 20
-            });
-        }
-
-        _root.help_showed ? $help.hide() : $help.show();
-        _root.help_showed = ! _root.help_showed;
-    }
-
-
-
-    /**
-     *
-     * URLハッシュを基づいたアクションを実行する
-     *
-     *   _route();      // location.hash を参照
-     *   _route(hash);  // hash を参照
-     *
-     **/
-    function _route (h_to) {
-        var pre = '#!';
-        var h = location.hash.replace(pre, '');
-        h_to = (typeof h_to != 'undefined' ? h_to : '').replace(pre, '');
-        var m = []; // matched
-
-
-        var re_page = new RegExp('/page/([0-9]+)(?:/from/([0-9]*)/?)?');
-
-        var tpl_page = pre + '/page/{%p%}/from/{%p_from%}';
-
-        // URLハッシュも指定もない
-        if (h_to == ''  &&  h == '') {
-            _show_page(0, 0);
-            location.hash = pre + '/page/0';
-            return true;
-        }
-
-        // 指定，もしくは URLハッシュが #!/page/{p}
-        m = ( h_to != '' ? h_to : h ).match(re_page);
-
-        if ( m != null ) {
-            var p      = parseInt( m[1] || 0 )
-              , p_from = parseInt( m[2] || 0 )
-            if (_is_valid_page(p) ) {
-                location.hash = tpl_page
-                    .replace('{%p%}',      p)
-                    .replace('{%p_from%}', p_from)
-                ;
-                _show_page(p, p_from);
-                return true;
-            }
-            else {
-                //_route('/page/0');
-                location.hash = '#!/page/0';
-                return false;
-            }
-        }
-
+      } else {
+        location.hash = '#!/page/0';
         return false;
+      }
     }
-
-
-
-    function _bind_functions () {
-        // click
-        $('body').click(function (ev) {
-            var b_wipe = ev.shiftKey ? false : true;
-            _next_item(b_wipe);
-        });
-
-        // keydown
-        $('body').keydown(function (ev) {
-            var b_wipe = ev.shiftKey ? false : true;
-
-            switch (ev.keyCode) {
-            // enter
-            case 13:
-                //_next_page(b_wipe);
-                _next_item(b_wipe);
-                return false;
-                break;
-
-            // backspace
-            case 8:
-                //_prev_page(b_wipe);
-                _prev_item(b_wipe);
-                return false;
-                break;
-
-
-            // j, J
-            case 74:
-                _next_item(b_wipe);
-                return false;
-                break;
-            // k, K
-            case 75:
-                _prev_item(b_wipe);
-                return false;
-                break;
-
-            // p, ↑
-            case 80:
-            case 38:
-                if (ev.metaKey) { _first_page(b_wipe); }
-                else            { _prev_page(b_wipe);  }
-                return false;
-                break;
-            // n, ↓
-            case 78:
-            case 40:
-                if (ev.metaKey) { _last_page(b_wipe); }
-                else            { _next_page(b_wipe); }
-                return false;
-                break;
-
-
-            // h, ?
-            case 72:
-            case 191:
-                if (ev.keyCode == 191 && !ev.shiftKey) { return; }
-                _show_help();
-                break;
-            }
-        });
-    }
-
-    function _unbind_functions () {
-        $('body')
-            .unbind('click')
-            .unbind('keydown')
-        ;
-    }
-
-
-    /**
-     *
-     * URL変化を感知する
-     *
-     *   1. _root.handle_url_change(url, url_before) を定義する
-     *   2. listen_url_change() する
-     *
-     */
-    function _listen_url_change (interval) {
-        _root.__urlchev__url_before = location.href;
-        _root.__urlchev__timer = setInterval(function () {
-            if (location.href != __urlchev__url_before) {
-                (_root.handle_url_change || function () {}) (location.href, __urlchev__url_before);
-                __urlchev__url_before = location.href;
-            }
-        }, interval || 50);
-    }
-
-    // URL変化時のハンドラ
-    _root.handle_url_change = function (url, url_before) {
-        var m = url.match(/#!(.*)$/);
-        var h = m[1] || '';
-        _route(h);
-    };
-
-
-
-    window.__main = function () {
-        _setup_geso();
-        _setup_slides();
-        _bind_functions();
-        _listen_url_change();
-        _route();
-    };
-
-})();
-
-
-
-$(function () {
-    __main();
-});
+    return false;
+  };
+  _alert = function(o) {
+    return console.log(o);
+  };
+  __main = function() {
+    _setup_geso();
+    _setup_slides();
+    _bind_functions();
+    _listen_url_change();
+    _route();
+  };
+  $(function() {
+    return __main();
+  });
+}).call(this);
