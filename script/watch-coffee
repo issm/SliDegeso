@@ -1,0 +1,64 @@
+#!/bin/sh
+
+ROOT=$( cd $(dirname $0)/../  &&  pwd )
+PIDFILE=$ROOT/tmp/watch-coffee.pid
+MODE=$1
+
+
+_main()
+{
+    case $MODE in
+        "start")
+            __start
+            ;;
+        "stop")
+            __stop
+            ;;
+        "restart")
+            __stop
+            __start
+            ;;
+        * )
+            __start
+    esac
+    exit 0
+}
+
+
+__start()
+{
+    if [ ! -d $ROOT/tmp ]; then
+        echo "no such directory: $ROOT/tmp"
+        exit 1
+    fi
+
+    exec watcher \
+        --dir $ROOT/coffee \
+        -- \
+        perl $ROOT/script/compile_coffee.pl $ROOT/coffee/slidegeso.coffee \
+        > /dev/null 2>&1 &
+
+    PID_WATCHER=$!
+    echo $PID_WATCHER > $PIDFILE
+}
+
+
+__stop()
+{
+    kill -TERM $(cat $PIDFILE)
+
+    if [ -f $PIDFILE ]; then
+        rm $PIDFILE
+    fi
+}
+
+
+__restart()
+{
+    __stop
+    sleep .5
+    __start
+}
+
+
+_main
