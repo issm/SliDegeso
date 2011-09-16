@@ -1,5 +1,5 @@
 _root = this
-_root.VERSION = '0.0003'
+_root.VERSION = '0.0004'
 _root.geso_rate =
         s: 1440 / 1920,
         m: 1920 / 1920,
