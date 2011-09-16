@@ -1,7 +1,7 @@
 (function() {
   var __main, _alert, _bind_functions, _first_page, _fix_geso_position, _fix_pre_content, _fix_slides, _is_valid_page, _last_page, _listen_url_change, _next_item, _next_page, _prev_item, _prev_page, _root, _route, _select_geso_size, _setup_geso, _setup_items, _setup_slides, _show_help, _show_page, _toggle_wiper_status, _unbind_functions, _update_navigator, _update_wiper_status, _wipe, _wipe_a_geso, _wiped_screen;
   _root = this;
-  _root.VERSION = '0.0002';
+  _root.VERSION = '0.0003';
   _root.geso_rate = {
     s: 1440 / 1920,
     m: 1920 / 1920
