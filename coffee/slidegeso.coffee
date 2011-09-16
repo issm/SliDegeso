@@ -4,6 +4,7 @@ _root.geso_rate =
         s: 1440 / 1920,
         m: 1920 / 1920,
 _root.size = 'm'
+_root.wiper_enabled = true
 _root.help_showed = false
 
 
@@ -69,6 +70,11 @@ _wipe = (callback) ->
 
     _unbind_functions();
 
+    if not _root.wiper_enabled
+        ( callback ? () -> )()
+        _bind_functions()
+        return
+
     $geso1 = $ '#gesogeso-geso-1'
     $geso2 = $ '#gesogeso-geso-2'
     $geso3 = $ '#gesogeso-geso-3'
@@ -132,6 +138,7 @@ _setup_slides = () ->
 
         if $slide[0].tagName.toLowerCase() is 'section'
             $( """
+                <div class=\"wiper-status wiper-status-enabled\"></div>
                 <div class=\"navigator navigator-more-item\"></div>
             """ ).appendTo $slide
 
@@ -191,6 +198,7 @@ _show_page = (p, p_from) ->
 
     _setup_items ( if p >= p_from then false else true )
     _update_navigator()
+    _update_wiper_status()
 
     return true
 
@@ -307,6 +315,19 @@ _update_navigator = () ->
             .addClass('navigator-next-page')
 
 
+_toggle_wiper_status = () ->
+    _root.wiper_enabled = not _root.wiper_enabled
+    _update_wiper_status()
+
+
+_update_wiper_status = () ->
+    $navi = window.__data.current_slide.find '.wiper-status'
+    if _root.wiper_enabled
+        $navi.addClass 'wiper-status-enabled'
+    else
+        $navi.removeClass 'wiper-status-enabled'
+
+
 _show_help = () ->
     usage = """
 
@@ -324,6 +345,8 @@ _show_help = () ->
          Command + Up:    FIRST    page
 
          Shift + (commands above): * \"without\" wiping
+
+         w:               toggle wiper
 
          h, ?:            show/hide this help
     """
@@ -390,6 +413,11 @@ _bind_functions = () ->
                     _last_page b_wipe
                 else
                     _next_page b_wipe
+                return false
+
+            #  w
+            when 87
+                _toggle_wiper_status()
                 return false
 
             #  h, ?

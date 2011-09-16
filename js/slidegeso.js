@@ -1,5 +1,5 @@
 (function() {
-  var __main, _alert, _bind_functions, _first_page, _fix_geso_position, _fix_pre_content, _fix_slides, _is_valid_page, _last_page, _listen_url_change, _next_item, _next_page, _prev_item, _prev_page, _root, _route, _select_geso_size, _setup_geso, _setup_items, _setup_slides, _show_help, _show_page, _unbind_functions, _update_navigator, _wipe, _wipe_a_geso, _wiped_screen;
+  var __main, _alert, _bind_functions, _first_page, _fix_geso_position, _fix_pre_content, _fix_slides, _is_valid_page, _last_page, _listen_url_change, _next_item, _next_page, _prev_item, _prev_page, _root, _route, _select_geso_size, _setup_geso, _setup_items, _setup_slides, _show_help, _show_page, _toggle_wiper_status, _unbind_functions, _update_navigator, _update_wiper_status, _wipe, _wipe_a_geso, _wiped_screen;
   _root = this;
   _root.VERSION = '0.0002';
   _root.geso_rate = {
@@ -7,6 +7,7 @@
     m: 1920 / 1920
   };
   _root.size = 'm';
+  _root.wiper_enabled = true;
   _root.help_showed = false;
   _setup_geso = function() {
     _select_geso_size();
@@ -51,6 +52,11 @@
     var $geso1, $geso2, $geso3, T, t, _ref;
     _ref = [1500, 400], T = _ref[0], t = _ref[1];
     _unbind_functions();
+    if (!_root.wiper_enabled) {
+      (callback != null ? callback : function() {})();
+      _bind_functions();
+      return;
+    }
     $geso1 = $('#gesogeso-geso-1');
     $geso2 = $('#gesogeso-geso-2');
     $geso3 = $('#gesogeso-geso-3');
@@ -116,7 +122,7 @@
       var $slide;
       $slide = $(this);
       if ($slide[0].tagName.toLowerCase() === 'section') {
-        $("<div class=\"navigator navigator-more-item\"></div>").appendTo($slide);
+        $("<div class=\"wiper-status wiper-status-enabled\"></div>\n<div class=\"navigator navigator-more-item\"></div>").appendTo($slide);
       }
       data.pages++;
       return data.slides.push($slide);
@@ -174,6 +180,7 @@
     }
     _setup_items((p >= p_from ? false : true));
     _update_navigator();
+    _update_wiper_status();
     return true;
   };
   _next_page = function(b) {
@@ -286,9 +293,22 @@
       return $navi.removeClass('navigator-more-item').addClass('navigator-next-page');
     }
   };
+  _toggle_wiper_status = function() {
+    _root.wiper_enabled = !_root.wiper_enabled;
+    return _update_wiper_status();
+  };
+  _update_wiper_status = function() {
+    var $navi;
+    $navi = window.__data.current_slide.find('.wiper-status');
+    if (_root.wiper_enabled) {
+      return $navi.addClass('wiper-status-enabled');
+    } else {
+      return $navi.removeClass('wiper-status-enabled');
+    }
+  };
   _show_help = function() {
     var $help, usage;
-    usage = "\nClick:           NEXT     item\n\nEnter:           NEXT     item\nBackSpace:       PREVIOUS item\n\nj:               NEXT     item\nk:               PREVIOUS item\n\nDown:            NEXT     page\nCommand + Down:  LAST     page\nUp:              PREVIOUS page\nCommand + Up:    FIRST    page\n\nShift + (commands above): * \"without\" wiping\n\nh, ?:            show/hide this help";
+    usage = "\nClick:           NEXT     item\n\nEnter:           NEXT     item\nBackSpace:       PREVIOUS item\n\nj:               NEXT     item\nk:               PREVIOUS item\n\nDown:            NEXT     page\nCommand + Down:  LAST     page\nUp:              PREVIOUS page\nCommand + Up:    FIRST    page\n\nShift + (commands above): * \"without\" wiping\n\nw:               toggle wiper\n\nh, ?:            show/hide this help";
     $help = $('#geso-help');
     if (!$help.size()) {
       $help = $('<section></section>').attr({
@@ -343,6 +363,9 @@
           } else {
             _next_page(b_wipe);
           }
+          return false;
+        case 87:
+          _toggle_wiper_status();
           return false;
         case 72:
         case 191:

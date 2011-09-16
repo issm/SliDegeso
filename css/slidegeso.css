@@ -275,3 +275,24 @@ section .navigator-more-item {
 section .navigator-next-page {
     background-position: 0 -44px;
 }
+
+
+
+
+section .wiper-status {
+    color: #fff;
+    text-align: right;
+
+    position: absolute;
+    left: -20px;
+    bottom: 5px;
+    width: 88px;
+    height: 75px;
+    overflow: hidden;
+    background-image: url(../img/geso_wiper_status.png);
+    background-position: 0 0;
+}
+
+section .wiper-status-enabled {
+    background-position: 0 -75px;
+}
