@@ -247,6 +247,9 @@
     if ($slide[0].tagName.toLowerCase() !== 'section') {
       return false;
     }
+    if ($slide.hasClass('show-all')) {
+      b_back = true;
+    }
     $slide.find(target).each(function(i) {
       var $item;
       $item = $(this);
@@ -333,20 +336,25 @@
       return _next_item(b_wipe);
     });
     return $('body').keydown(function(ev) {
-      var b_wipe;
+      var $slide, b_wipe;
+      $slide = __data.current_slide;
       b_wipe = ev.shiftKey ? false : true;
       switch (ev.keyCode) {
-        case 13:
-          _next_item(b_wipe);
-          return false;
-        case 8:
-          _prev_item(b_wipe);
-          return false;
         case 74:
-          _next_item(b_wipe);
+        case 13:
+          if ($slide.hasClass('show-all')) {
+            _next_page(b_wipe);
+          } else {
+            _next_item(b_wipe);
+          }
           return false;
         case 75:
-          _prev_item(b_wipe);
+        case 8:
+          if ($slide.hasClass('show-all')) {
+            _prev_page(b_wipe);
+          } else {
+            _prev_item(b_wipe);
+          }
           return false;
         case 80:
         case 38:

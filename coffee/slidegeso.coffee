@@ -256,6 +256,9 @@ _setup_items = (b_back) ->
     if $slide[0].tagName.toLowerCase() isnt 'section'
         return false
 
+    if $slide.hasClass('show-all')
+        b_back = true;
+
     $slide.find(target).each (i) ->
         $item = $ this
 
@@ -377,27 +380,23 @@ _bind_functions = () ->
 
     #  keydown
     $('body').keydown (ev) ->
+        $slide = __data.current_slide
         b_wipe = if ev.shiftKey then false else true
 
         switch ev.keyCode
-            #  enter
-            when 13
-                # _next_page b_wipe
-                _next_item b_wipe
+            #  j, J, enter
+            when 74, 13
+                if $slide.hasClass 'show-all'
+                     _next_page b_wipe
+                else
+                    _next_item b_wipe
                 return false
-            #  backspace
-            when 8
-                # _prev_page b_wipe
-                _prev_item b_wipe
-                return false
-
-            #  j, J
-            when 74
-                _next_item b_wipe
-                return false
-            #  k, K
-            when 75
-                _prev_item b_wipe
+            #  k, K, backspace
+            when 75, 8
+                if $slide.hasClass 'show-all'
+                    _prev_page b_wipe
+                else
+                    _prev_item b_wipe
                 return false
 
             #  p, ↑
