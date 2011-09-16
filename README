@@ -30,6 +30,15 @@ SYNOPSIS
           <li>item3</li>
         </ul>
       </section>
+
+      <section class="show-all">
+        <h1>Slide Page 3</h1>
+        <ul>
+          <li>shows</li>
+          <li>all items</li>
+          <li>at once</li>
+        </ul>
+      </section>
   
       ...
   
