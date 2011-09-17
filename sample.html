@@ -246,8 +246,8 @@
           my $env = shift;
           return [
               200,
-              [ 'Content-Type' =&gt; 'text/plain' ],
-              [ "Hello World de geso" ],
+              [ 'Content-Type' => 'text/plain' ],
+              [ "<h1>Hello World de geso</h1>" ],
           ];
       };
     </pre>
@@ -264,12 +264,13 @@
           my $env = shift;
           return [
               200,
-              [ 'Content-Type' =&gt; 'text/plain' ],
-              [ "Hello World de geso" ],
+              [ 'Content-Type' => 'text/plain' ],
+              [ "<h1>Hello World de geso</h1>" ],
           ];
       };
     &lt;/pre&gt;
     </pre>
+    <p>シンタックスハイライトはそのうちなんとかしたい</p>
   </section>
 
 
@@ -280,9 +281,9 @@
     <ul>
       <li>
         URLで表示ページを指定可能
-        <pre lang="">
-          {スライドのURL}#!/page/{ページ}
-        </pre>
+        <ul>
+          <li><code>{スライドのURL}#!/page/{ページ}</code></li>
+        </ul>
       </li>
     </ul>
   </section>
