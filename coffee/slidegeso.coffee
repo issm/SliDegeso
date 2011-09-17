@@ -158,8 +158,10 @@ _fix_slides = () ->
 _fix_pre_content = () ->
     $('section pre').each () ->
         lines =
-             $(this).text()
+             $(this).html()
                  .replace(/(^ *\n+|\n+ *$)/g, '')
+                 .replace(/&lt;/g, '<')
+                 .replace(/&gt;/g, '>')
                  .split('\n')
         try
             [_dummy, indent_del] = (lines[0] ? '').match /^( *)/

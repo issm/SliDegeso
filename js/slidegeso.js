@@ -139,7 +139,7 @@
   _fix_pre_content = function() {
     return $('section pre').each(function() {
       var i, indent_del, lines, re, _dummy, _ref, _ref2, _ref3;
-      lines = $(this).text().replace(/(^ *\n+|\n+ *$)/g, '').split('\n');
+      lines = $(this).html().replace(/(^ *\n+|\n+ *$)/g, '').replace(/&lt;/g, '<').replace(/&gt;/g, '>').split('\n');
       try {
         _ref2 = ((_ref = lines[0]) != null ? _ref : '').match(/^( *)/), _dummy = _ref2[0], indent_del = _ref2[1];
         re = new RegExp('^' + indent_del);
