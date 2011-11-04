@@ -1,3 +1,8 @@
+0.0005  2011-11-15 06:15
+        - class "SliDegeso" is available, all codes are in this class
+        - behavior of SliDegeso is configurable with SliDegeso.config hash
+          defined in html file
+
 0.0004  2011-09-16 23:00
         - in "<section>" element, class "show-all" is available
 
