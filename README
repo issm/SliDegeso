@@ -6,8 +6,13 @@ SYNOPSIS
 
   <head>
     <link rel="stylesheet" type="text/css" href="css/slidegeso.css" />
-    <script type="text/javascript" src="js/jquery-1.6.3.min.js"></script>
+    <script type="text/javascript" src="js/jquery-1.7.min.js"></script>
     <script type="text/javascript" src="js/slidegeso.js"></script>
+    <script type="text/javascript">
+SliDegeso.config = {
+    wiper_enabled: true
+};
+    </script>
   </head>
   <body>
     <article>
