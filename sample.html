@@ -6,8 +6,13 @@
 
   <link rel="stylesheet" type="text/css" href="css/slidegeso.css" />
 
-  <script type="text/javascript" src="js/jquery-1.6.3.min.js"></script>
+  <script type="text/javascript" src="js/jquery-1.7.min.js"></script>
   <script type="text/javascript" src="js/slidegeso.js" charset="utf-8"></script>
+  <script type="text/javascript">
+SliDegeso.config = {
+    wiper_enabled: true   // デフォルトのワイパー有効状態
+};
+  </script>
 </head>
 <body>
 <article>
@@ -16,7 +21,7 @@
     <h1>「イカワイパー」で<br />ページ切り替えを行う<br />プレゼンツール「SliDegeso」</h1>
     <address>
       <code>
-        SliDegeso-0.0004
+        SliDegeso-0.0005
         @issm
         <br />
         type "?" to show help
@@ -63,9 +68,12 @@
         &lt;link rel="stylesheet" type="text/css"
               href="css/slidegeso.css" /&gt;
         &lt;script type="text/javascript"
-              src="js/jquery-1.6.3.min.js"&gt;&lt;/script&gt;
+              src="js/jquery-1.7.min.js"&gt;&lt;/script&gt;
         &lt;script type="text/javascript"
               src="js/slidegeso.js"&gt;&lt;/script&gt;
+        &lt;script type="text/javascript"&gt;
+SliDegeso.config = { ... }
+        &lt;/script&gt;
       &lt;/head&gt;
     </pre>
   </section>
